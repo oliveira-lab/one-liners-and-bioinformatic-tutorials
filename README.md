@@ -60,6 +60,18 @@ Transpose file:
     
     awk '{for (i=1; i<=NF; i++)  {a[NR,i] = $i}} NF>p { p = NF } END {for(k=1; k<=p; k++) {z=a[1,k];for(i=2; i<=NR; i++){z=z" "a[i,k];} print z}}' in.txt
 
+Compare two files based on 1st field and output difference.
+
+    awk 'FNR==NR{a[$1]++;next}!a[$1]' in1.txt in2.txt
+    
+Compare 1st, 2nd, and 3rd fields of in1.txt with 1st, 4th and 5th fields of in2.txt. Only matching rows in in2.txt will be printed.
+    
+    awk 'NR==FNR{a[$1,$2,$3]++;next} (a[$1,$4,$5])' in1.txt in2.txt
+
+Print one line after (A) and two lines before (B) the matching regex (e.g.:foo).
+
+    grep -A1 -B2 'foo' in.txt
+
 
 ## DNA, words
 
@@ -101,5 +113,7 @@ Linearize multi-FASTA sequences:
 Sequence length of every entry in a multifasta file:
 
     awk '/^>/ {if (seqlen){print seqlen}; print ;seqlen=0;next;}{seqlen = seqlen + length($0)} END {print seqlen}' in.fa
-
     
+Convert two column file format to FASTA format.
+    
+    awk '{print ">" $1,"\n" $2;}' in.txt
