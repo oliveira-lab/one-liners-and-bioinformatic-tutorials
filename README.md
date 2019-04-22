@@ -20,11 +20,11 @@ Print every fifth line starting at the third line:
 
     awk 'NR % 5 == 3' in.txt
     
-Print everything except the first line
+Print everything except the first line:
     
     awk 'NR > 1' in.txt
     
-Print everything except the last line
+Print everything except the last line:
     
     sed \$d in.txt
     
@@ -36,6 +36,14 @@ Delete blank lines in file:
 
     sed '/^$/d' in.txt
     
+Delete lines with string (e.g.: foo):
+
+    sed '/foo/d' in.txt
+    
+Uniq on one column (field 3):
+
+    awk '!arr[$3]++' in.txt
+    
 Replace all occurrences of bar with foo:
     
     sed 's/bar/foo/g' in.txt
@@ -43,8 +51,36 @@ Replace all occurrences of bar with foo:
 Compute the mean of column 3:
     
     awk '{x+=$3}END{print x/NR}' in.txt
+    
+Compute the median of column 3:
+    
+    sort -nk3,3 in.txt | awk 'NF{a[NR]=$3;p++} END {print (p%2==0)?(a[int(p/2)+1]+a[int(p/2)])/2:a[int(p/2)+1]}'
+    
+Transpose file:
+    
+    awk '{for (i=1; i<=NF; i++)  {a[NR,i] = $i}} NF>p { p = NF } END {for(k=1; k<=p; k++) {z=a[1,k];for(i=2; i<=NR; i++){z=z" "a[i,k];} print z}}' in.txt
+
+
+## DNA, words
+
+Print all possible 4-mer DNA sequence combinations:
+
+    echo {A,C,T,G}{A,C,T,G}{A,C,T,G}{A,C,T,G}
+    
+Generate a list of 10 random integers between 100 and 200:
+    
+    awk -v min=100 -v max=200 -v freq=10 'BEGIN{srand(); for(i=0;i<freq;i++) print int(min+rand()*(max-min+1))}'
+    
+Reverse complement DNA sequence (e.g.: ATGCA):
+    
+    echo ATGCA | perl -nle 'print map{$_ =~ tr/ACGT/TGCA/; $_} reverse split("",$_)'
+
 
 ## FASTA/Q handling
+
+Obtain md5 checksums of fastq files:
+
+    ls *fastq.gz | parallel md5sum {} > Checksums.txt
 
 Convert FASTQ to FASTA:
     
@@ -61,4 +97,9 @@ Extract FASTA sequences from in.fa using IDs stored in ID.txt:
 Linearize multi-FASTA sequences:
     
     awk '/^>/ {printf("%s%s\t",(N>0?"\n":""),$0);N++;next;} {printf("%s",$0);} END {printf("\n");}' in.fa
+    
+Sequence length of every entry in a multifasta file:
+
+    awk '/^>/ {if (seqlen){print seqlen}; print ;seqlen=0;next;}{seqlen = seqlen + length($0)} END {print seqlen}' in.fa
+
     
