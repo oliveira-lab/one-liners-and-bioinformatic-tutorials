@@ -7,7 +7,7 @@
 
 - [Unix under MacOSX](#unix-under-macosx)
 - [Unix under Windows](#unix-under-windows)
-- [Requirements](#requirements)
+- [Dummy test files](#dummy-test-files)
 - [Basic Awk & Sed](#basic-awk-sed)
 - [DNA, words](#dna-words)
 - [FASTA/Q handling](#fasta/q-handling)
@@ -16,7 +16,6 @@
 ![fortune | cowsay ](./cowsay.png)
 
 
-## Requirements
 
 # Unix under MacOSX
 
@@ -51,7 +50,7 @@ an ID file with FASTA headers [ID.txt](./ID.txt), a FASTQ file [in.fq](./in.fq),
 Just open Terminal (in MacOSX) or Cygwin (for example) in Windows and have fun!
 
 
-## Basic Awk & Sed
+# Basic Awk & Sed
 
 #### Extract columns/fields 1, 3, and 7 from in.csv:
 
@@ -126,7 +125,7 @@ Just open Terminal (in MacOSX) or Cygwin (for example) in Windows and have fun!
     grep -A1 -B2 '99' in.csv
 
 
-## DNA, words
+# DNA, words
 
 #### Print all possible 4-mer DNA sequence combinations:
 
@@ -141,7 +140,7 @@ Just open Terminal (in MacOSX) or Cygwin (for example) in Windows and have fun!
     echo ATGCA | perl -nle 'print map{$_ =~ tr/ACGT/TGCA/; $_} reverse split("",$_)'
     
     
-## FASTA/Q handling
+# FASTA/Q handling
 
 #### Obtain md5 checksums of FASTQ files:
 
@@ -197,7 +196,7 @@ Just open Terminal (in MacOSX) or Cygwin (for example) in Windows and have fun!
 			
     
     
-## More resources
+# More resources
 
 - [awesome-shell](https://github.com/alebcay/awesome-shell): A curated list of shell tools and resources.
 - [awesome-osx-command-line](https://github.com/herrbischoff/awesome-osx-command-line): A more in-depth guide for the macOS command line.
