@@ -171,7 +171,7 @@ Just open Terminal (in MacOSX) or Cygwin (for example) in Windows and have fun!
     
     awk '{print ">" $1,"\n" $2;}' in.txt
     
-#### Compute all occurrences and start-end positions of the motif TATAWA in a FASTA file:    
+#### Compute all occurrences and start-end positions of the motif TCTAWA in a FASTA file:    
     
 - One great option is to install [SeqKit](https://bioinf.shenwei.me/seqkit/download/) and run it as:
 
@@ -182,7 +182,7 @@ Just open Terminal (in MacOSX) or Cygwin (for example) in Windows and have fun!
 	
 		seqkit locate --ignore-case --degenerate -f motifs.fa in.fa
 
-#### Run FASTQC on your FASTQ filess:
+#### Run FASTQC on your FASTQ files:
 
 - First install FASTQC (for example using brew):
 
