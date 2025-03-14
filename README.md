@@ -94,51 +94,77 @@ Just open Terminal (in MacOSX) or Cygwin (for example) in Windows and have fun!
     
 #### Uniq on one column (field 3):
 
-    awk '!arr[$3]++' in.csv
+```bash
+awk '!arr[$3]++' in.csv
+```
     
 #### Replace all occurrences of 23 with 99:
-    
-    sed 's/23/99/g' in.csv
+
+```bash    
+sed 's/23/99/g' in.csv
+```
 
 #### Compute the mean of column 3:
-    
-    awk '{x+=$3}END{print x/NR}' in.csv
+
+```bash   
+awk '{x+=$3}END{print x/NR}' in.csv
+```
     
 #### Compute the median of column 3:
-    
-    sort -nk3,3 in.csv | awk 'NF{a[NR]=$3;p++} END {print (p%2==0)?(a[int(p/2)+1]+a[int(p/2)])/2:a[int(p/2)+1]}'
+
+```bash    
+sort -nk3,3 in.csv | awk 'NF{a[NR]=$3;p++} END {print (p%2==0)?(a[int(p/2)+1]+a[int(p/2)])/2:a[int(p/2)+1]}'
+```
     
 #### Transpose file:
-    
-    awk '{for (i=1; i<=NF; i++)  {a[NR,i] = $i}} NF>p { p = NF } END {for(k=1; k<=p; k++) {z=a[1,k];for(i=2; i<=NR; i++){z=z" "a[i,k];} print z}}' in.csv
+
+```bash      
+awk '{for (i=1; i<=NF; i++)  {a[NR,i] = $i}} NF>p { p = NF } END {for(k=1; k<=p; k++) {z=a[1,k];for(i=2; i<=NR; i++){z=z" "a[i,k];} print z}}' in.csv
+```
 
 #### Compare two files based on 1st field and output difference.
 
-    awk 'FNR==NR{a[$1]++;next}!a[$1]' in1.csv in2.csv
+```bash
+awk 'FNR==NR{a[$1]++;next}!a[$1]' in1.csv in2.csv
+```
     
 #### Compare 1st, 2nd, and 3rd fields of in1.csv with 1st, 4th and 5th fields of in2.csv. Only matching rows in in2.csv will be printed.
-    
-    awk 'NR==FNR{a[$1,$2,$3]++;next} (a[$1,$4,$5])' in1.csv in2.csv
+
+```bash
+awk 'NR==FNR{a[$1,$2,$3]++;next} (a[$1,$4,$5])' in1.csv in2.csv
+```
 
 #### Print one line after (A) and two lines before (B) the matching regex (e.g.:99).
 
-    grep -A1 -B2 '99' in.csv
-
+```bash
+grep -A1 -B2 '99' in.csv
+```
 
 # DNA, words
 
 #### Print all possible 4-mer DNA sequence combinations:
 
-    echo {A,C,T,G}{A,C,T,G}{A,C,T,G}{A,C,T,G}
-    
+```bash
+echo {A,C,T,G}{A,C,T,G}{A,C,T,G}{A,C,T,G}
+```
+
 #### Generate a list of 10 random integers between 100 and 200:
-    
-    awk -v min=100 -v max=200 -v freq=10 'BEGIN{srand(); for(i=0;i<freq;i++) print int(min+rand()*(max-min+1))}'
-    
+
+```bash
+awk -v min=100 -v max=200 -v freq=10 'BEGIN{srand(); for(i=0;i<freq;i++) print int(min+rand()*(max-min+1))}'
+```
+ 
 #### Reverse complement DNA sequence (e.g.: ATGCA):
     
-    echo ATGCA | perl -nle 'print map{$_ =~ tr/ACGT/TGCA/; $_} reverse split("",$_)'
-    
+1. **Option 1**:
+	```bash
+	echo ATGCA | perl -nle 'print map{$_ =~ tr/ACGT/TGCA/; $_} reverse split("",$_)'
+	```
+
+2. **Option 2**:
+	```bash
+	echo ATGCA | rev | tr 'ACTG' 'TGAC'
+	```
     
 # FASTA/Q handling
 
@@ -149,6 +175,10 @@ Just open Terminal (in MacOSX) or Cygwin (for example) in Windows and have fun!
 #### Convert FASTQ to FASTA:
     
     awk 'NR%4==1{print ">"substr($0,2)}NR%4==2{print $0}' in.fq > out.fa
+
+#### Number of reads in a FASTQ file:
+    
+    echo $(cat in.fq | wc -l)/4 | bc
 
 #### Split multi-FASTA file into individual FASTA files:
     
